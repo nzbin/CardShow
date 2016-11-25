@@ -35,7 +35,9 @@
                     <option>手动</option>
                 </select>
             </nav>
+
             <div class="luckyarea"><span>CardShow</span></div>
+            
             <ul id="" class="card-container card-perspective">
                 <!-- <li class="card card-flip">
                             <figure>
@@ -43,7 +45,7 @@
                                 <figcaption>about</figcaption>
                             </figure>
                             <div class="card-back"></div>
-                    </li> -->
+                        </li> -->
             </ul>
 
         </div>
@@ -55,6 +57,19 @@
     window.jQuery || document.write('<script src="js/vendor/jquery-1.12.4.min.js"><\/script>')
     </script>
     <script src="js/cardshow.js"></script>
+    <script type="text/javascript">
+
+        var cs = $('.card-container').cardshow({
+            autoDrawing: true,
+            drawingCardsNum: 3,
+            drawingRounds: 0,
+            drawingSpeed: 300,
+            rows: 2,
+            cardWidth: 90,
+            cardHeight: 120
+        });
+
+    </script>
 </body>
 
 </html>

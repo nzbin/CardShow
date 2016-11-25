@@ -404,14 +404,3 @@
     }
 
 })(window, jQuery);
-
-//测试用
-var cs = $('.card-container').cardshow({
-    autoDrawing: true,
-    drawingCardsNum: 3,
-    drawingRounds: 0,
-    drawingSpeed: 300,
-    rows: 2,
-    cardWidth: 90,
-    cardHeight: 120
-});
