@@ -1,0 +1,61 @@
+﻿var userData = [{
+    "id": 1,
+    "nickName": "a",
+    "avatar": "./img/1.jpg",
+    "isWinning": 0,
+    "isWinningAward": 0
+}, {
+    "id": 2,
+    "nickName": "b",
+    "avatar": "./img/2.jpg",
+    "isWinning": 0,
+    "isWinningAward": 0
+}, {
+    "id": 3,
+    "nickName": "c",
+    "avatar": "./img/3.jpg",
+    "isWinning": 0,
+    "isWinningAward": 0
+}, {
+    "id": 4,
+    "nickName": "d",
+    "avatar": "./img/4.jpg",
+    "isWinning": 0,
+    "isWinningAward": 0
+}, {
+    "id": 5,
+    "nickName": "e",
+    "avatar": "./img/5.jpg",
+    "isWinning": 1,
+    "isWinningAward": 0
+}, {
+    "id": 6,
+    "nickName": "f",
+    "avatar": "./img/6.jpg",
+    "isWinning": 0,
+    "isWinningAward": 0
+}, {
+    "id": 7,
+    "nickName": "g",
+    "avatar": "./img/7.jpg",
+    "isWinning": 1,
+    "isWinningAward": 0
+}, {
+    "id": 8,
+    "nickName": "h",
+    "avatar": "./img/8.jpg",
+    "isWinning": 0,
+    "isWinningAward": 0
+}, {
+    "id": 9,
+    "nickName": "i",
+    "avatar": "./img/9.jpg",
+    "isWinning": 0,
+    "isWinningAward": 0
+}, {
+    "id": 10,
+    "nickName": "j",
+    "avatar": "./img/10.jpg",
+    "isWinning": 0,
+    "isWinningAward": 0
+}]
