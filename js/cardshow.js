@@ -46,6 +46,16 @@
 
     $.CardShow = function(el, options) {
 
+        var transEndEventNames = {
+            'WebkitTransition': 'webkitTransitionEnd',
+            'MozTransition': 'transitionend',
+            'OTransition': 'oTransitionEnd',
+            'msTransition': 'MSTransitionEnd',
+            'transition': 'transitionend'
+        };
+
+        this.transEndEventName = transEndEventNames[Modernizr.prefixed('transition')];
+
         this.cardContainer = $(el);
         this.containerWidth = this.cardContainer.width();
         this.containerHeight = this.cardContainer.height();
@@ -185,11 +195,11 @@
             var cardBack = $elem.find('.card-back');
 
             // 如果设置背面显示
-            if(self.options.backface){
+            if (self.options.backface) {
                 cardFront.css({
                     'transform': 'rotateY(180deg)'
                 })
-            }else{
+            } else {
                 cardBack.css({
                     'transform': 'rotateY(180deg)'
                 })
@@ -265,31 +275,37 @@
         stop: function() {
             var self = this;
 
-            if (self.isDrawing) {
-                // 判断抽奖是否结束
-                var drawingEnd = --self.drawingCardsNum <= 0 ? true : false;
+            if (self.options.autoDrawing) {
 
-                if(self.options.backface){
-                    //alert();
-                    self.turnItem(self.luckyNum);
+                if (self.isDrawing) {
+                    // 判断抽奖是否结束
+                    var drawingEnd = --self.drawingCardsNum <= 0 ? true : false;
+
+                    if (self.options.backface) {
+                        self.turnItem(self.luckyNum);
+                    }
+
+                    console.log(self.luckyNum); // 测试打印中奖号
+                    self.showLucky(self.luckyNum);
+                    //移除中奖用户
+                    self.cards.splice(self.luckyNum, 1);
+
+                    //self.arrange(25, 20, 1);
+                        
+                    self.totalNum--;
+
+                    //先打印再清除计时器
+                    if (drawingEnd) {
+                        clearTimeout(self.timer);
+                        self.isDrawing = false;
+                        // 抽完定时收起卡片
+                        setTimeout(function(){
+                            self.shuffle();
+                        },1000);
+                    };
+
                 }
-
-                console.log(self.luckyNum); // 测试打印中奖号
-                self.showLucky(self.luckyNum);
-                //移除中奖用户
-                self.cards.splice(self.luckyNum, 1);
-                self.arrange(25, 20, 1);
-                self.totalNum--;
-
-
-                //先打印再清除计时器
-                if (drawingEnd) {
-                    clearTimeout(self.timer);
-                    self.isDrawing = false;
-                    self.shuffle();
-                    return;
-                };
-
+                
             }
 
         },
@@ -297,27 +313,27 @@
         showLucky: function(luckyNum) {
             var self = this;
 
-            // 中奖卡片依次排列添加翻转函数
-            var onEndTransitionFn = function(){
-                self.cards.eq(luckyNum).css({
-                    'transform': 'translate(' + (self.options.drawingCardsNum - self.drawingCardsNum) * self.cardWidth + 'px,-140px) rotateY(-179.9deg)',
-                    'z-index': 0
-                });
-            }
-
-            if(self.options.backface){
-                if(this.isDrawing){
-                    // self.cards.eq(luckyNum).on('transitionend',onEndTransitionFn);
-                    onEndTransitionFn();
+            if (self.options.backface) {
+                if (this.isDrawing) {
+                    // 中奖卡片依次排列添加翻转
+                    self.cards.eq(luckyNum).on('transitionend', function() {
+                        // 先移除事件
+                        $(this).off('transitionend');
+                        $(this).css({
+                            'transform': 'translate(' + (self.options.drawingCardsNum - self.drawingCardsNum) * self.cardWidth + 'px,-140px) rotateY(-179.9deg)',
+                            'z-index': 0
+                        });
+                    });
+                    // onEndTransitionFn();
                 }
-            } else{
+            } else {
 
                 // 中奖卡片依次排列
                 self.cards.eq(luckyNum).css({
                     'transform': 'translate(' + (self.options.drawingCardsNum - self.drawingCardsNum - 1) * self.cardWidth + 'px,-140px)',
                     'z-index': 0
                 });
-                
+
             }
 
         },
@@ -357,28 +373,28 @@
                         // index 就是当前中奖号
                         self.luckyNum = index;
 
-                        $(this).css({
-                            'transform': 'translate(' + (parseInt(x) + 90) + 'px, ' + y + 'px ) rotateY(-179.9deg)',
-                            'z-index': '999'
-                        });
+                        if (self.options.backface) {
+                            $(this).css({
+                                'transform': 'translate(' + (parseInt(x) + 90) + 'px, ' + y + 'px ) rotateY(-179.9deg)',
+                                'z-index': '999'
+                            });
+                        }
                         // self.showLucky(index);
-                        setTimeout(function() {
 
-                            console.log(self.luckyNum); // 测试打印中奖号
-                            self.showLucky(self.luckyNum);
-                            //移除中奖用户
-                            self.cards.splice(self.luckyNum, 1);
-                            self.arrange(25, 20, 1);
-                            self.totalNum--;
-                            // 设置标识符，抽完一轮为止
-                            if (drawingEnd) {
-                                self.isDrawing = false;
+                        console.log(self.luckyNum); // 测试打印中奖号
+                        self.showLucky(self.luckyNum);
+                        //移除中奖用户
+                        self.cards.splice(self.luckyNum, 1);
+                        //self.arrange(25, 20, 1);
+                        self.totalNum--;
+                        // 设置标识符，抽完一轮为止
+                        if (drawingEnd) {
+                            self.isDrawing = false;
+                            // 抽完定时收起卡片
+                            setTimeout(function(){
                                 self.shuffle();
-                                return;
-                            }
-
-                        }, 1000);
-
+                            },1000);
+                        }
 
                     }
 
@@ -401,9 +417,8 @@
         //     })
         // },
         // 弹出提示
-        popUp: function() {
+        // popUp: function() {},
 
-        },
         // 事件初始化
         initEvents: function() {
             var self = this;

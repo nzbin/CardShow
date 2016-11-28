@@ -94,6 +94,7 @@ button{
     top: 0;
     left: 0;
     z-index: 1;
+    background: #ccc;
     background: repeating-linear-gradient(45deg,#ccc 0%,#ccc 10%,#ddd 0%,#ddd 50%) 0 / 6px 6px;
     border: 1px solid #b5b5b5;
 }
