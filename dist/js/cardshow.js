@@ -109,7 +109,7 @@
 
             this.turnItem();
 
-            //this.cardHover();
+            this.cardHover();
 
             this.initEvents();
 
@@ -139,7 +139,7 @@
         arrange: function(x, y, z) {
             var self = this;
             // shuffleArr(this.cards);
-            this.cards.css('transition', 'all ' + self.options.drawingSpeed + 'ms ease');
+            this.cards.css('transition', 'all ' + self.options.drawingSpeed + 'ms ease-in-out');
             // 计算每行卡片数
             var rowsNum = Math.ceil(self.totalNum / self.options.rows);
 
@@ -203,7 +203,7 @@
             });
             // 绑定 transitionend 事件
             $elem.on(self.transEndEventName, function() {
-                $(this).css('transition', 'all ' + self.options.drawingSpeed + 'ms ease');
+                $(this).css('transition', 'all ' + self.options.drawingSpeed + 'ms ease-in-out');
             });
 
         },
@@ -394,32 +394,41 @@
             });
         },
         //卡片触摸置顶，可有可无？
-        // cardHover: function(){
-        //     var self = this;
-        //     var zIndex;
+        cardHover: function(){
+            // var self = this;
+            // var zIndex;
 
-        //     self.cards.hover(function(e){
-        //         e.stopPropagation();
-        //         zIndex = $(this).css('z-index');
-        //         $(this).css('z-index','999');
-        //     },function(e){
-        //         e.stopPropagation();
-        //         $(this).css('z-index',zIndex);
-        //     })
-        // },
-        // 弹出提示
-        // popUp: function() {},
+            // self.cards.hover(function(e){
+            //     e.stopPropagation();
+            //     zIndex = $(this).css('z-index');
+            //     $(this).css('z-index','999');
+            // },function(e){
+            //     e.stopPropagation();
+            //     $(this).css('z-index',zIndex);
+            // })
+        },
 
         // 事件初始化
         initEvents: function() {
             var self = this;
 
             $('#start').click(function() {
+
                 if (self.totalNum < 2) {
                     alert('The number is too small!')
                     return;
                 }
-                self.start();
+
+                self.shuffle();
+
+                setTimeout(function() {
+                    self.arrange(25, 20, 1);
+                }, 500);
+
+                setTimeout(function() {
+                    self.start();
+                }, 1500);
+
             });
 
             $('#stop').click(function() {
@@ -458,13 +467,10 @@
             var args = Array.prototype.slice.call(arguments, 1);
 
             this.each(function() {
+
                 if (!instance) {
                     logError("cannot call methods on cardshow prior to initialization; " +
                         "attempted to call method '" + options + "'");
-                    return;
-                }
-                if (!$.isFunction(instance[options]) || options.charAt(0) === "_") {
-                    logError("no such method '" + options + "' for cardshow instance");
                     return;
                 }
 
