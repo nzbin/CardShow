@@ -8,7 +8,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <!-- Place favicon.ico in the root directory -->
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Lato:300,400,700)' />
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/cardshow.css">
@@ -62,13 +61,11 @@
 
     var cs = $('.card-container').cardshow({
         src: data,
-        autoDrawing: true,
+        autoDrawing: false,
         drawingCardsNum: 3,
         drawingRounds: 0,
         drawingSpeed: 300,
         rows: 1,
-        cardWidth: 90,
-        cardHeight: 120,
         backface: true
     });
     
