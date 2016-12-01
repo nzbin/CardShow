@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 body {
-	background: url(../img/texture.png);
+	background: url(../img/texture.png) #7CAB90;
 	font-family: 'Lato', Calibri, Arial, sans-serif;
 	color:#333;
 }
