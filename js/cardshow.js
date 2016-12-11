@@ -141,8 +141,6 @@
             var self = this;
             // shuffleArr(this.cards);
             this.cards.css('transition', 'all ' + self.options.drawingSpeed + 'ms ease-in-out');
-            // 计算每行卡片数
-            var rowsNum = Math.ceil(self.totalNum / self.options.rows);
 
             if (!z) {
                 // 如果卡片位于初始位置，不对卡片分组
@@ -157,6 +155,12 @@
                 return;
             }
 
+            // 计算每行卡片数
+            var rowsNum = Math.ceil(self.totalNum / self.options.rows);
+            // 根据卡片数量布局，禁止超出屏幕
+            // if (rowsNum > Math.floor(self.containerWidth / self.cardWidth)) {
+            //     x = (self.containerWidth - self.cardWidth) / (rowsNum - 1);
+            // }
             // 循环添加每张卡片的位移
             for (var i = 0; i < self.options.rows; i++) {
                 // 根据行数进行卡片分组
@@ -363,7 +367,7 @@
             }
 
             // 卡片单击翻转抽奖
-            self.cards.on('click.cardshow',function(e) {
+            self.cards.on('click.cardshow', function(e) {
 
                 e.preventDefault();
                 e.stopPropagation();
@@ -435,7 +439,10 @@
             //     $(this).css('z-index',zIndex);
             // })
         },
+        // 窗口变化事件
+        resize: function(){
 
+        },
         // 事件初始化
         initEvents: function() {
             var self = this;
