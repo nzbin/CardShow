@@ -77,7 +77,3 @@
     border-radius: 4px;
 }
 
-/*测试用*/
-.back{
-    transform:translate(90px) rotateY(-179.9deg);
-}

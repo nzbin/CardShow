@@ -68,13 +68,14 @@
         this.runTimes = 0;
         // 扩展 options
         this.options = $.extend(true, {}, $.CardShow.defaults, options);
-        // 卡片尺寸信息
-        this.cardWidth = this.options.cardWidth;
-        this.cardHeight = this.options.cardHeight;
         // 保存抽卡数
         this.drawingCardsNum = this.options.drawingCardsNum;
         // 初始化插件
         this.init(options);
+
+        // 卡片尺寸信息（通过 CSS 设置卡片尺寸更方便）
+        this.cardWidth = this.cardContainer.find('li').width();
+        this.cardHeight = this.cardContainer.find('li').height();
 
     }
 
@@ -93,10 +94,6 @@
         drawingRounds: 0,
         // 自动抽取的速度
         drawingSpeed: 300,
-        // 卡片宽度
-        cardWidth: 90,
-        // 卡片高度
-        cardHeight: 120
     };
 
     $.CardShow.prototype = {

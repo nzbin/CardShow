@@ -2,6 +2,8 @@
 
 CardShow is a jQuery plugin of drawing cards.
 
+## Browser Support
+IE9+ / Edge / FireFox 3.5+ / Chrome / Safari / Opera 11.5+
 
 ## Options
 
@@ -15,7 +17,7 @@ CardShow is a jQuery plugin of drawing cards.
 
 ## Usage
 
-### html:
+### html structure of card:
 ```html
 <ul class="card-container card-perspective">
 	<li class="card card-flip">
@@ -30,15 +32,15 @@ CardShow is a jQuery plugin of drawing cards.
 
 ### instance:
 ```js
-var cs = $('.card-container').cardshow({
-	         src: data,
-	         autoDrawing: true,
-	         backface: true,
-	         rows: 1,
-	         drawingCardsNum: 3,
-	         drawingRounds: 0,
-	         drawingSpeed: 300
-	     });
+var cardshow = $('.card-container').cardshow({
+	src: data,
+	autoDrawing: true,
+	backface: true,
+	rows: 1,
+	drawingCardsNum: 3,
+	drawingRounds: 0,
+	drawingSpeed: 300
+});
 ```
 
 
