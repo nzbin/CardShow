@@ -111,6 +111,8 @@
 
             this.initEvents();
 
+            this.resize();
+
         },
         setData: function() {
             // 方法一
@@ -438,6 +440,23 @@
         },
         // 窗口变化事件
         resize: function(){
+            // var self = this;
+
+            // // 函数节流 impress.js
+            // var throttle = function(fn, delay){
+            //     var timer = null;
+            //     return function(){
+            //         var context = this, args = arguments;
+            //         clearTimeout(timer);
+            //         timer = setTimeout(function(){
+            //             fn.apply(context, args);
+            //         }, delay);
+            //     };
+            //  };
+
+            //  window.onresize = throttle(function(){
+            //     self.init(self.options);
+            //  }, 1500);
 
         },
         // 事件初始化

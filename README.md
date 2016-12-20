@@ -7,13 +7,13 @@ IE9+ / Edge / FireFox 3.5+ / Chrome / Safari / Opera 11.5+
 
 ## Options
 
-- __src__: ```String``` 抽奖用户数据，根据需要生成
-- __autoDrawing__: ```Boolean``` 自动抽取/手动抽取，默认为 true（自动抽）
-- __backface__: ```Boolean``` 卡片入场是否背面显示，默认为 true（背面显示）
-- __rows__: ```Number``` 卡片分几行显示，建议最大值为 3
-- __drawingCardsNum__: ```Number``` 每轮次抽取的卡片数，默认为 1 张
-- __drawingRounds__: ```Number``` 抽奖轮次，默认为 0（不限次）
-- __drawingSpeed__: ```Number``` 自动抽取的速度，默认为 300
+- __src__: ```String``` The data of user,you should set it as required.
+- __autoDrawing__: ```Boolean``` Default true,automatic drawing or manual drawing.
+- __backface__: ```Boolean``` Default true,if show the back of cards with their entrances.
+- __rows__: ```Number``` Default 1,arrange the cards with multiple lines.
+- __drawingCardsNum__: ```Number``` Default 1,the number of drawing cards every round.
+- __drawingRounds__: ```Number``` Default 0 (no limit),the rounds of drawing cards.
+- __drawingSpeed__: ```Number``` Default 300,the speed of automatic drawing.
 
 ## Usage
 
