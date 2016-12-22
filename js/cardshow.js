@@ -157,8 +157,8 @@
 
             // 计算每行卡片数
             var rowsNum = Math.ceil(self.totalNum / self.options.rows);
-            // 根据卡片数量布局，禁止超出屏幕，卡片重叠一半最佳
-            if (rowsNum + 1 > Math.floor(self.containerWidth / (self.cardWidth / 2))) {
+            // 根据卡片数量布局，禁止超出屏幕，如果 x 值过大则根据容器宽度计算
+            if ((rowsNum - 1) * x + self.cardWidth > self.containerWidth) {
                 x = (self.containerWidth - self.cardWidth) / (rowsNum - 1);
             }
             // 循环添加每张卡片的位移
@@ -319,10 +319,13 @@
 
             if (!self.supportPreserve3d || !self.options.backface) {
 
+                var x = (self.options.drawingCardsNum - self.drawingCardsNum) * self.cardWidth;
+                var y = parseInt(self.cardHeight) + 20;
+
                 //setTimeout(function(){
                 // 中奖卡片依次排列
                 self.cards.eq(luckyNum).css({
-                    'transform': 'translate(' + (self.options.drawingCardsNum - self.drawingCardsNum - 1) * self.cardWidth + 'px,-140px)',
+                    'transform': 'translate(' + x + 'px,' + -y + 'px)',
                     'z-index': '999'
                 });
                 //},500);
@@ -336,10 +339,14 @@
                     self.cards.eq(luckyNum).on(self.transEndEventName, function() {
 
                         self.isAnimationEnd = true;
+
+                        var x = (self.options.drawingCardsNum - self.drawingCardsNum) * self.cardWidth;
+                        var y = parseInt(self.cardHeight) + 20;
+
                         // 先移除事件
                         $(this).off(self.transEndEventName);
                         $(this).css({
-                            'transform': 'translate(' + (self.options.drawingCardsNum - self.drawingCardsNum) * self.cardWidth + 'px,-140px) rotateY(-179.9deg)',
+                            'transform': 'translate(' + x + 'px,' + -y + 'px) rotateY(-179.9deg)',
                             'z-index': self.options.drawingCardsNum - self.drawingCardsNum - 1
                         });
                     });
