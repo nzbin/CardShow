@@ -46,36 +46,11 @@
 
     $.CardShow = function(el, options) {
 
-        var transEndEventNames = {
-            'WebkitTransition': 'webkitTransitionEnd',
-            'MozTransition': 'transitionend',
-            'OTransition': 'oTransitionEnd',
-            'msTransition': 'MSTransitionEnd',
-            'transition': 'transitionend'
-        };
-
-        this.transEndEventName = transEndEventNames[Modernizr.prefixed('transition')];
-        this.supportPreserve3d = Modernizr.preserve3d; // 针对 IE
-
         this.cardContainer = $(el);
-        this.containerWidth = this.cardContainer.width();
-        this.containerHeight = this.cardContainer.height();
-        // 中奖号
-        this.luckyNum = 0;
-        // 是否正在抽奖
-        this.isDrawing = false;
-        // 随机数产生次数
-        this.runTimes = 0;
-        // 扩展 options
-        this.options = $.extend(true, {}, $.CardShow.defaults, options);
-        // 保存抽卡数
-        this.drawingCardsNum = this.options.drawingCardsNum;
         // 初始化插件
         this.init(options);
-
-        // 卡片尺寸信息（通过 CSS 设置卡片尺寸更方便）
-        this.cardWidth = this.cardContainer.find('li').width();
-        this.cardHeight = this.cardContainer.find('li').height();
+        // 初始化事件
+        this.initEvents();
 
     }
 
@@ -100,16 +75,42 @@
 
         init: function(options) {
 
+            var transEndEventNames = {
+                'WebkitTransition': 'webkitTransitionEnd',
+                'MozTransition': 'transitionend',
+                'OTransition': 'oTransitionEnd',
+                'msTransition': 'MSTransitionEnd',
+                'transition': 'transitionend'
+            };
+
+            this.transEndEventName = transEndEventNames[Modernizr.prefixed('transition')];
+            this.supportPreserve3d = Modernizr.preserve3d; // 针对 IE
+
+            this.containerWidth = this.cardContainer.width();
+            this.containerHeight = this.cardContainer.height();
+            // 中奖号
+            this.luckyNum = 0;
+            // 是否正在抽奖
+            this.isDrawing = false;
+            // 单次抽奖是否结束，避免连击
+            this.isAnimationEnd = true
+                // 随机数产生次数
+            this.runTimes = 0;
+            // 扩展 options
+            this.options = $.extend(true, {}, $.CardShow.defaults, options);
+            // 保存抽卡数
+            this.drawingCardsNum = this.options.drawingCardsNum;
             // 插入数据
             this.setData();
-
+            // 卡片飞出
             this.entrance(this.cards);
+            // 卡片尺寸信息（通过 CSS 设置卡片尺寸更方便）必须在卡片飞出后设置
+            this.cardWidth = this.cardContainer.find('li').width();
+            this.cardHeight = this.cardContainer.find('li').height();
 
             this.turnItem();
 
             this.cardHover();
-
-            this.initEvents();
 
             this.resize();
 
@@ -135,13 +136,13 @@
         },
 
         // 设置用户信息卡片排列位置，
-        // x ,y 表示卡片间隔，z 表示初始位置还是排列位置 0 || 1
-        arrange: function(x, y, z) {
+        // x ,y 表示卡片间隔，pos 表示初始位置还是排列位置 0 || 1
+        arrange: function(x, y, pos) {
             var self = this;
             // shuffleArr(this.cards);
             this.cards.css('transition', 'all ' + self.options.drawingSpeed + 'ms ease-in-out');
 
-            if (!z) {
+            if (!pos) {
                 // 如果卡片位于初始位置，不对卡片分组
                 self.cards
                     .each(function(j) {
@@ -156,17 +157,17 @@
 
             // 计算每行卡片数
             var rowsNum = Math.ceil(self.totalNum / self.options.rows);
-            // 根据卡片数量布局，禁止超出屏幕
-            // if (rowsNum > Math.floor(self.containerWidth / self.cardWidth)) {
-            //     x = (self.containerWidth - self.cardWidth) / (rowsNum - 1);
-            // }
+            // 根据卡片数量布局，禁止超出屏幕，卡片重叠一半最佳
+            if (rowsNum + 1 > Math.floor(self.containerWidth / (self.cardWidth / 2))) {
+                x = (self.containerWidth - self.cardWidth) / (rowsNum - 1);
+            }
             // 循环添加每张卡片的位移
             for (var i = 0; i < self.options.rows; i++) {
                 // 根据行数进行卡片分组
                 self.cards.slice(rowsNum * i, rowsNum * (i + 1))
                     .each(function(j) {
                         $(this).css({
-                            'transform': 'translate(' + j * x + 'px, ' + (self.cardHeight * i + y * i) * z + 'px)',
+                            'transform': 'translate(' + j * x + 'px, ' + (self.cardHeight * i + y * i) * pos + 'px)',
                             //'transition': 'all ' + self.options.drawingSpeed + 'ms '+ 'ease ' + self.options.drawingSpeed*0.5*(rowsNum-j) + 'ms' ,
                             'z-index': j + rowsNum * i
                         });
@@ -216,6 +217,7 @@
         // 抽奖过程中的动画效果
         highlight: function(index) {
             var self = this;
+
             self.runTimes++;
 
             // 获取元素 tranform 中的 translate3d 的 x & y 值
@@ -270,34 +272,41 @@
         stop: function() {
             var self = this;
 
-            if (self.options.autoDrawing) {
+            // 设置变量，避免结束按钮连击
+            if (self.isAnimationEnd) {
 
-                if (self.isDrawing) {
-                    // 判断抽奖是否结束
-                    var drawingEnd = --self.drawingCardsNum <= 0 ? true : false;
-                    // 如果是背面则有翻转动作
-                    if (self.options.backface) {
-                        self.turnItem(self.luckyNum);
+                self.isAnimationEnd = false;
+
+                if (self.options.autoDrawing) {
+
+                    if (self.isDrawing) {
+                        // 判断抽奖是否结束
+                        var drawingEnd = --self.drawingCardsNum <= 0 ? true : false;
+                        // 如果是背面则有翻转动作
+                        if (self.options.backface) {
+                            self.turnItem(self.luckyNum);
+                        }
+
+                        console.log(self.luckyNum); // 测试打印中奖号
+                        self.showLucky(self.luckyNum);
+                        //移除中奖用户
+                        self.cards.splice(self.luckyNum, 1);
+
+                        //self.arrange(25, 20, 1);
+
+                        self.totalNum--;
+
+                        //先打印再清除计时器
+                        if (drawingEnd) {
+                            clearTimeout(self.timer);
+                            self.isDrawing = false;
+                            // 抽完定时收起卡片
+                            setTimeout(function() {
+                                self.shuffle();
+                            }, 1000);
+                        };
+
                     }
-
-                    console.log(self.luckyNum); // 测试打印中奖号
-                    self.showLucky(self.luckyNum);
-                    //移除中奖用户
-                    self.cards.splice(self.luckyNum, 1);
-
-                    //self.arrange(25, 20, 1);
-
-                    self.totalNum--;
-
-                    //先打印再清除计时器
-                    if (drawingEnd) {
-                        clearTimeout(self.timer);
-                        self.isDrawing = false;
-                        // 抽完定时收起卡片
-                        setTimeout(function() {
-                            self.shuffle();
-                        }, 1000);
-                    };
 
                 }
 
@@ -325,6 +334,8 @@
                 if (this.isDrawing) {
                     // 中奖卡片依次排列添加翻转
                     self.cards.eq(luckyNum).on(self.transEndEventName, function() {
+
+                        self.isAnimationEnd = true;
                         // 先移除事件
                         $(this).off(self.transEndEventName);
                         $(this).css({
@@ -439,65 +450,68 @@
             // })
         },
         // 窗口变化事件
-        resize: function(){
-            // var self = this;
+        resize: function() {
+            var self = this;
 
-            // // 函数节流 impress.js
-            // var throttle = function(fn, delay){
-            //     var timer = null;
-            //     return function(){
-            //         var context = this, args = arguments;
-            //         clearTimeout(timer);
-            //         timer = setTimeout(function(){
-            //             fn.apply(context, args);
-            //         }, delay);
-            //     };
-            //  };
+            // 函数节流 impress.js
+            var throttle = function(fn, delay) {
+                var timer = null;
+                return function() {
+                    var context = this,
+                        args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() {
+                        fn.apply(context, args);
+                    }, delay);
+                };
+            };
 
-            //  window.onresize = throttle(function(){
-            //     self.init(self.options);
-            //  }, 1500);
+            window.onresize = throttle(function() {
+                self.init(self.options);
+            }, 1500);
 
         },
-        // 事件初始化
+        // 默认事件
         initEvents: function() {
             var self = this;
 
-            $('#start').click(function() {
+            $('#start').on('click', function() {
+                // 避免开始按钮连击
+                if (!self.isDrawing) {
 
-                if (self.totalNum < 2) {
-                    alert('The number is too small!')
-                    return;
+                    if (self.totalNum < 2) {
+                        alert('The number is too small!');
+                        return;
+                    }
+                    self.shuffle();
+
+                    setTimeout(function() {
+                        self.arrange(25, 20, 1);
+                    }, 1000);
+
+                    setTimeout(function() {
+                        self.start();
+                    }, 1500);
+
                 }
-
-                self.shuffle();
-
-                setTimeout(function() {
-                    self.arrange(25, 20, 1);
-                }, 1000);
-
-                setTimeout(function() {
-                    self.start();
-                }, 1500);
 
             });
 
-            $('#stop').click(function() {
+            $('#stop').on('click', function() {
                 self.stop();
             });
 
-            $('#shuffle').click(function() {
+            $('#shuffle').on('click', function() {
                 self.shuffle();
             });
 
-            $('#arrange').click(function() {
+            $('#arrange').on('click', function() {
                 self.arrange(25, 20, 1);
             });
 
-            $('#reset').click(function() {
+            $('#reset').on('click', function() {
                 self.drawingCardsNum = self.options.drawingCardsNum;
             });
-
         }
 
     };
