@@ -1,11 +1,10 @@
 /*
- * cardshow.js v1.0.0
+ * cardshow.js v1.2.0
  * 
  * Released under the MIT license
  * Copyright 2016 by nzbin
  */
 
-//jQuery.fn.reverse = [].reverse;
 
 ;
 (function(window, $) {
@@ -112,7 +111,9 @@
 
             this.cardHover();
 
-            this.resize();
+            // 解决 chrome/opera 打开时 onresize 就执行的 bug
+            var widthFlag = window.innerWidth;
+            this.resize(widthFlag);
 
         },
         setData: function() {
@@ -319,7 +320,10 @@
 
             if (!self.supportPreserve3d || !self.options.backface) {
 
-                var x = (self.options.drawingCardsNum - self.drawingCardsNum) * self.cardWidth;
+                self.isAnimationEnd = true;
+                
+                // IE 因为没有翻转所以需要减一个宽度
+                var x = (self.options.drawingCardsNum - self.drawingCardsNum - 1) * self.cardWidth;
                 var y = parseInt(self.cardHeight) + 20;
 
                 //setTimeout(function(){
@@ -457,7 +461,7 @@
             // })
         },
         // 窗口变化事件
-        resize: function() {
+        resize: function(flag) {
             var self = this;
 
             // 函数节流 impress.js
@@ -474,7 +478,13 @@
             };
 
             window.onresize = throttle(function() {
-                self.init(self.options);
+                // 通过宽度变化对比，避免浏览器刚打开就执行事件
+                var widthFlagResize = window.innerWidth;
+
+                if (flag != widthFlagResize) {
+                    self.init(self.options);
+                }
+
             }, 1500);
 
         },
