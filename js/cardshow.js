@@ -1,5 +1,5 @@
 /*
- * cardshow.js v1.2.0
+ * cardshow.js v1.2.1
  * 
  * Released under the MIT license
  * Copyright 2016 by nzbin
