@@ -1,5 +1,5 @@
 /*
- * cardshow.js v1.2.1
+ * cardshow.js v1.3.0
  * 
  * Released under the MIT license
  * Copyright 2016 by nzbin
@@ -28,7 +28,6 @@
     };
 
     // 产生相邻不重复的随机数，n 为随机数个数
-    // 定义比较变量，能否封装？
     var b = 0;
 
     function random(n) {
@@ -92,7 +91,7 @@
             // 是否正在抽奖
             this.isDrawing = false;
             // 单次抽奖是否结束，避免连击
-            this.isAnimationEnd = true
+            this.isAnimating = true
                 // 随机数产生次数
             this.runTimes = 0;
             // 扩展 options
@@ -219,8 +218,6 @@
         highlight: function(index) {
             var self = this;
 
-            self.runTimes++;
-
             // 获取元素 tranform 中的 translate3d 的 x & y 值
             var x = self.cards.eq(index).css('transform').split(', ')[4];
             var y = self.cards.eq(index).css('transform').split(', ')[5].slice(0, -1);
@@ -231,6 +228,24 @@
             // 元素位置定时还原
             setTimeout(function() {
                 self.cards.eq(index).css('transform', 'translate(' + x + 'px,' + y + 'px)');
+            }, self.options.drawingSpeed);
+
+        },
+        // 循环抽奖函数
+        drawing: function() {
+            var self = this;
+
+            clearTimeout(self.timer);
+            //self.arrange(25, 20, 1);
+            // 随机函数，关键一步
+            self.luckyNum = random(self.totalNum);
+
+            self.highlight(self.luckyNum);
+
+            self.timer = setTimeout(function() {
+
+                self.drawing()
+
             }, self.options.drawingSpeed);
 
         },
@@ -245,42 +260,57 @@
 
             if (self.options.autoDrawing) {
 
-                clearTimeout(self.timer);
+                // 避免开始按钮连击
+                if (!self.isDrawing) {
+                    // 每次开始抽则重设单次抽卡数
+                    self.drawingCardsNum = self.options.drawingCardsNum;
 
-                //self.arrange(25, 20, 1);
-                // 随机函数，关键一步
-                self.luckyNum = random(self.totalNum);
-                //console.log(self.luckyNum);
-                self.highlight(self.luckyNum);
+                    if (self.totalNum < 2) {
+                        alert('The number is too small!');
+                        return;
+                    }
+                    self.shuffle();
 
-                self.timer = setTimeout(function() {
+                    setTimeout(function() {
+                        self.arrange(25, 20, 1);
+                    }, 1000);
 
-                    self.start()
+                    setTimeout(function() {
+                        self.drawing();
+                    }, 1500);
 
-                }, self.options.drawingSpeed);
+                }
 
             } else {
-
+                // 若设置手动抽，单击开始则展开卡片
                 self.arrange(25, 20, 1);
 
             }
+            // 设置卡片排列结束后才可以抽出
+            setTimeout(function() {
 
-            this.isDrawing = true;
-            //this.options.drawingCardsNum--;
+                self.isDrawing = true;
+                //this.options.drawingCardsNum--;
+
+            }, self.options.drawingSpeed);
 
         },
         // 停止抽奖并显示中奖用户
         stop: function() {
             var self = this;
-
-            // 设置变量，避免结束按钮连击
-            if (self.isAnimationEnd) {
-
-                self.isAnimationEnd = false;
+            // if (!self.isDrawing) {
+            //     alert()
+            // }
+            if (self.isDrawing) {
 
                 if (self.options.autoDrawing) {
 
-                    if (self.isDrawing) {
+                    // 设置变量，避免结束按钮连击
+                    if (self.isAnimating) {
+
+                        self.isAnimating = false;
+
+                        self.runTimes++;
                         // 判断抽奖是否结束
                         var drawingEnd = --self.drawingCardsNum <= 0 ? true : false;
                         // 如果是背面则有翻转动作
@@ -320,10 +350,10 @@
 
             if (!self.supportPreserve3d || !self.options.backface) {
 
-                self.isAnimationEnd = true;
-                
+                self.isAnimating = true;
+
                 // IE 因为没有翻转所以需要减一个宽度
-                var x = (self.options.drawingCardsNum - self.drawingCardsNum - 1) * self.cardWidth;
+                var x = (self.runTimes - 1) * self.cardWidth;
                 var y = parseInt(self.cardHeight) + 20;
 
                 //setTimeout(function(){
@@ -342,16 +372,16 @@
                     // 中奖卡片依次排列添加翻转
                     self.cards.eq(luckyNum).on(self.transEndEventName, function() {
 
-                        self.isAnimationEnd = true;
+                        self.isAnimating = true;
 
-                        var x = (self.options.drawingCardsNum - self.drawingCardsNum) * self.cardWidth;
+                        var x = self.runTimes * self.cardWidth;
                         var y = parseInt(self.cardHeight) + 20;
 
                         // 先移除事件
                         $(this).off(self.transEndEventName);
                         $(this).css({
                             'transform': 'translate(' + x + 'px,' + -y + 'px) rotateY(-179.9deg)',
-                            'z-index': self.options.drawingCardsNum - self.drawingCardsNum - 1
+                            'z-index': self.runTimes - 1
                         });
                     });
 
@@ -392,6 +422,8 @@
 
                 e.preventDefault();
                 e.stopPropagation();
+
+                self.runTimes++;
 
                 var $el = $(this);
                 // 手动抽翻转，自动抽不能翻转
@@ -493,25 +525,7 @@
             var self = this;
 
             $('#start').on('click', function() {
-                // 避免开始按钮连击
-                if (!self.isDrawing) {
-
-                    if (self.totalNum < 2) {
-                        alert('The number is too small!');
-                        return;
-                    }
-                    self.shuffle();
-
-                    setTimeout(function() {
-                        self.arrange(25, 20, 1);
-                    }, 1000);
-
-                    setTimeout(function() {
-                        self.start();
-                    }, 1500);
-
-                }
-
+                self.start();
             });
 
             $('#stop').on('click', function() {
@@ -527,7 +541,7 @@
             });
 
             $('#reset').on('click', function() {
-                self.drawingCardsNum = self.options.drawingCardsNum;
+                self.runTimes = 0;
             });
         }
 
