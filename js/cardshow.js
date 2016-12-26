@@ -98,6 +98,8 @@
             this.options = $.extend(true, {}, $.CardShow.defaults, options);
             // 保存抽卡数
             this.drawingCardsNum = this.options.drawingCardsNum;
+            // 保存抽卡轮次
+            this.drawingRounds = this.options.drawingRounds;
             // 插入数据
             this.setData();
             // 卡片飞出
@@ -131,47 +133,56 @@
         // 数组重排
         shuffle: function() {
             var self = this;
-            shuffleArr(self.cards);
-            self.arrange(1.5, 0, 0);
+
+            if (!self.isDrawing) {
+
+                shuffleArr(self.cards);
+                self.arrange(1.5, 0, 0);
+
+            }
         },
 
         // 设置用户信息卡片排列位置，
         // x ,y 表示卡片间隔，pos 表示初始位置还是排列位置 0 || 1
         arrange: function(x, y, pos) {
             var self = this;
-            // shuffleArr(this.cards);
-            this.cards.css('transition', 'all ' + self.options.drawingSpeed + 'ms ease-in-out');
 
-            if (!pos) {
-                // 如果卡片位于初始位置，不对卡片分组
-                self.cards
-                    .each(function(j) {
-                        $(this).css({
-                            'transform': 'translate(' + j * x + 'px, ' + y + 'px)',
-                            'z-index': j
+            if (!self.isDrawing) {
+                // shuffleArr(this.cards);
+                this.cards.css('transition', 'all ' + self.options.drawingSpeed + 'ms ease-in-out');
+
+                if (!pos) {
+                    // 如果卡片位于初始位置，不对卡片分组
+                    self.cards
+                        .each(function(j) {
+                            $(this).css({
+                                'transform': 'translate(' + j * x + 'px, ' + y + 'px)',
+                                'z-index': j
+                            });
                         });
-                    });
 
-                return;
-            }
+                    return;
+                }
 
-            // 计算每行卡片数
-            var rowsNum = Math.ceil(self.totalNum / self.options.rows);
-            // 根据卡片数量布局，禁止超出屏幕，如果 x 值过大则根据容器宽度计算
-            if ((rowsNum - 1) * x + self.cardWidth > self.containerWidth) {
-                x = (self.containerWidth - self.cardWidth) / (rowsNum - 1);
-            }
-            // 循环添加每张卡片的位移
-            for (var i = 0; i < self.options.rows; i++) {
-                // 根据行数进行卡片分组
-                self.cards.slice(rowsNum * i, rowsNum * (i + 1))
-                    .each(function(j) {
-                        $(this).css({
-                            'transform': 'translate(' + j * x + 'px, ' + (self.cardHeight * i + y * i) * pos + 'px)',
-                            //'transition': 'all ' + self.options.drawingSpeed + 'ms '+ 'ease ' + self.options.drawingSpeed*0.5*(rowsNum-j) + 'ms' ,
-                            'z-index': j + rowsNum * i
+                // 计算每行卡片数
+                var rowsNum = Math.ceil(self.totalNum / self.options.rows);
+                // 根据卡片数量布局，禁止超出屏幕，如果 x 值过大则根据容器宽度计算
+                if ((rowsNum - 1) * x + self.cardWidth > self.containerWidth) {
+                    x = (self.containerWidth - self.cardWidth) / (rowsNum - 1);
+                }
+                // 循环添加每张卡片的位移
+                for (var i = 0; i < self.options.rows; i++) {
+                    // 根据行数进行卡片分组
+                    self.cards.slice(rowsNum * i, rowsNum * (i + 1))
+                        .each(function(j) {
+                            $(this).css({
+                                'transform': 'translate(' + j * x + 'px, ' + (self.cardHeight * i + y * i) * pos + 'px)',
+                                //'transition': 'all ' + self.options.drawingSpeed + 'ms '+ 'ease ' + self.options.drawingSpeed*0.5*(rowsNum-j) + 'ms' ,
+                                'z-index': j + rowsNum * i
+                            });
                         });
-                    });
+                }
+
             }
 
         },
@@ -253,54 +264,54 @@
         start: function() {
             var self = this;
 
-            // 每轮结束设置
-            // if( self.drawingCardsNum == 0 ){
-            //     return;
-            // }
+            // 轮次结束返回
+            if (self.options.drawingRounds != 0) {
 
-            if (self.options.autoDrawing) {
+                if (--self.drawingRounds < 0) {
+                    alert('The game is over,please refresh!');
+                    return;
+                }
 
-                // 避免开始按钮连击
-                if (!self.isDrawing) {
-                    // 每次开始抽则重设单次抽卡数
-                    self.drawingCardsNum = self.options.drawingCardsNum;
+            }
 
-                    if (self.totalNum < 2) {
-                        alert('The number is too small!');
-                        return;
-                    }
-                    self.shuffle();
+            // 卡片数过少返回
+            if (self.totalNum < 10) {
+                alert('The number is too small!');
+                return;
+            }
 
-                    setTimeout(function() {
-                        self.arrange(25, 20, 1);
-                    }, 1000);
+            // 避免开始按钮连击
+            if (!self.isDrawing) {
+                // 每次开始抽则重设单次抽卡数
+                self.drawingCardsNum = self.options.drawingCardsNum;
+
+                self.shuffle();
+
+                setTimeout(function() {
+                    self.arrange(25, 20, 1);
+                }, 1000);
+
+                if (self.options.autoDrawing) {
 
                     setTimeout(function() {
                         self.drawing();
                     }, 1500);
 
                 }
+                // 设置卡片排列结束后才可以抽出
+                setTimeout(function() {
 
-            } else {
-                // 若设置手动抽，单击开始则展开卡片
-                self.arrange(25, 20, 1);
+                    self.isDrawing = true;
+
+                }, 1500);
 
             }
-            // 设置卡片排列结束后才可以抽出
-            setTimeout(function() {
-
-                self.isDrawing = true;
-                //this.options.drawingCardsNum--;
-
-            }, self.options.drawingSpeed);
 
         },
         // 停止抽奖并显示中奖用户
         stop: function() {
             var self = this;
-            // if (!self.isDrawing) {
-            //     alert()
-            // }
+
             if (self.isDrawing) {
 
                 if (self.options.autoDrawing) {
@@ -423,13 +434,13 @@
                 e.preventDefault();
                 e.stopPropagation();
 
-                self.runTimes++;
-
                 var $el = $(this);
-                // 手动抽翻转，自动抽不能翻转
-                if (!self.options.autoDrawing) {
 
-                    if (self.isDrawing) {
+                if (self.isDrawing) {
+                    // 手动抽翻转，自动抽不能翻转
+                    if (!self.options.autoDrawing) {
+
+                        self.runTimes++;
                         // 判断抽奖是否结束
                         var drawingEnd = --self.drawingCardsNum <= 0 ? true : false;
                         // 获取元素 tranform 中的 translate3d 的 x & y 值
