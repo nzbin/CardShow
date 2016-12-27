@@ -12,24 +12,6 @@
 
     'use strict';
 
-    var random = function(){
-
-        var b = 0;
-
-        return function (n) {
-            var a = Math.floor(Math.random() * n);
-
-            if (a == b) {
-                return random(n); // 忘记传参，找了好长时间的错误
-            } else {
-                b = a;
-                return b;
-            }
-
-        }
-
-    }();
-
     $.CardShow = function(el, options) {
 
         this.cardContainer = $(el);
@@ -118,6 +100,20 @@
             this.cards = $(this.options.src);
             // 参加抽奖用户总数
             this.totalNum = this.cards.length;
+
+        },
+        // 产生相邻不重复的随机数，n 为随机数个数
+        random: function(n) {
+            var self = this;
+
+            var rand = Math.floor(Math.random() * n);
+
+            if (rand == self.luckyNum) {
+                return self.random(n); // 忘记传参，找了好长时间的错误
+            } else {
+                self.luckyNum = rand;
+                return self.luckyNum;
+            }
 
         },
         // 数组重排
@@ -255,7 +251,7 @@
             clearTimeout(self.timer);
             //self.arrange(25, 20, 1);
             // 随机函数，关键一步
-            self.luckyNum = random(self.totalNum);
+            self.luckyNum = self.random(self.totalNum);
 
             self.highlight(self.luckyNum);
 
