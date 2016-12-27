@@ -3,6 +3,7 @@
  * 
  * Released under the MIT license
  * Copyright 2016 by nzbin
+ *
  */
 
 
@@ -11,36 +12,23 @@
 
     'use strict';
 
-    // 数组随机变换函数
-    function shuffleArr(array) {
-        var m = array.length,
-            t, i;
-        // While there remain elements to shuffle…
-        while (m) {
-            // Pick a remaining element…
-            i = Math.floor(Math.random() * m--);
-            // And swap it with the current element.
-            t = array[m];
-            array[m] = array[i];
-            array[i] = t;
-        }
-        return array;
-    };
+    var random = function(){
 
-    // 产生相邻不重复的随机数，n 为随机数个数
-    var b = 0;
+        var b = 0;
 
-    function random(n) {
-        var a = Math.floor(Math.random() * n);
+        return function (n) {
+            var a = Math.floor(Math.random() * n);
 
-        if (a == b) {
-            return random(n); // 忘记传参，找了好长时间的错误
-        } else {
-            b = a;
-            return b;
+            if (a == b) {
+                return random(n); // 忘记传参，找了好长时间的错误
+            } else {
+                b = a;
+                return b;
+            }
+
         }
 
-    };
+    }();
 
     $.CardShow = function(el, options) {
 
@@ -88,11 +76,13 @@
             this.containerHeight = this.cardContainer.height();
             // 中奖号
             this.luckyNum = 0;
+            // 避免开始连击
+            this.isStarting = false;
             // 是否正在抽奖
             this.isDrawing = false;
             // 单次抽奖是否结束，避免连击
-            this.isAnimating = true
-                // 随机数产生次数
+            this.isAnimating = true;
+            // 随机数产生次数
             this.runTimes = 0;
             // 扩展 options
             this.options = $.extend(true, {}, $.CardShow.defaults, options);
@@ -133,6 +123,22 @@
         // 数组重排
         shuffle: function() {
             var self = this;
+
+            // 数组随机变换函数
+            function shuffleArr(array) {
+                var m = array.length,
+                    t, i;
+                // While there remain elements to shuffle…
+                while (m) {
+                    // Pick a remaining element…
+                    i = Math.floor(Math.random() * m--);
+                    // And swap it with the current element.
+                    t = array[m];
+                    array[m] = array[i];
+                    array[i] = t;
+                }
+                return array;
+            };
 
             if (!self.isDrawing) {
 
@@ -281,7 +287,9 @@
             }
 
             // 避免开始按钮连击
-            if (!self.isDrawing) {
+            if (!self.isStarting) {
+
+                self.isStarting = true;
                 // 每次开始抽则重设单次抽卡数
                 self.drawingCardsNum = self.options.drawingCardsNum;
 
@@ -341,6 +349,7 @@
                         //先打印再清除计时器
                         if (drawingEnd) {
                             clearTimeout(self.timer);
+                            self.isStarting = false;
                             self.isDrawing = false;
                             // 抽完定时收起卡片
                             setTimeout(function() {
@@ -424,7 +433,6 @@
                         self.cards.eq(luckyNum).find('.card-front').css('display', 'block').siblings('.card-back').css('display', 'none');
 
                     }
-
                 }
             }
 
@@ -476,6 +484,7 @@
 
                         // 设置标识符，抽完一轮为止
                         if (drawingEnd) {
+                            self.isStarting = false;
                             self.isDrawing = false;
                             // 抽完定时收起卡片
                             setTimeout(function() {
@@ -509,11 +518,15 @@
 
             // 函数节流 impress.js
             var throttle = function(fn, delay) {
+
                 var timer = null;
+
                 return function() {
                     var context = this,
                         args = arguments;
+
                     clearTimeout(timer);
+
                     timer = setTimeout(function() {
                         fn.apply(context, args);
                     }, delay);
