@@ -6,8 +6,10 @@
 body {
 	background: url(../img/texture.png) #7CAB90;
 	font-family: 'Lato', Calibri, Arial, sans-serif;
+	font-size: 14px;
 	color:#333;
 }
+ul,li{list-style:none;}
 img {
 	width: 100%;
 }
@@ -53,7 +55,7 @@ button{
     font-size: 1.2rem;
 }
 .iconlink:hover {
-	padding: 10px 10px 10px 70px;
+	padding: 10px 10px 10px 80px;
 }
 .iconlink[data-title]:before {
 	font-weight:300;
@@ -62,8 +64,8 @@ button{
 	position:absolute;
 	top:0;
 	left:0;
-	font-size:12px;
-	padding:11px 5px;
+	font-size:14px;
+	padding:12px 6px;
 	color:#fff;
 	text-decoration:none;
 	width:auto;
