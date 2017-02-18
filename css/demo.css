@@ -8,6 +8,9 @@ body {
 	font-family: 'Lato', Calibri, Arial, sans-serif;
 	color:#333;
 }
+ul,li{
+	list-style:none;
+}
 img {
 	width: 100%;
 }
