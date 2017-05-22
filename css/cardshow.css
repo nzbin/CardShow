@@ -43,7 +43,7 @@
     transition: all 300ms ease-in-out;
     cursor: pointer;
 }
-.card-container .card:hover {
+.card:hover {
     top: -5px;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, .3);
     z-index: 999;
