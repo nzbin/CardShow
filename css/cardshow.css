@@ -53,7 +53,6 @@
 .card:hover {
     top: -5px;
     box-shadow: 0 0 10px 5px rgba(0, 0, 0, .3);
-    z-index: 999;
 }
 
 .card-front {
@@ -101,6 +100,5 @@
     .card:hover {
         top: 0;
         box-shadow: none;
-        z-index: 999;
     }
 }

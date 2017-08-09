@@ -191,6 +191,8 @@
         // 卡片入场动画
         entrance: function($elem) {
             var self = this;
+            // 卡片入场时先洗牌，解决火狐卡顿问题
+            self.shuffle();
 
             var cardFront = $elem.find('.card-front');
             var cardBack = $elem.find('.card-back');
@@ -288,8 +290,6 @@
                 self.isStarting = true;
                 // 每次开始抽则重设单次抽卡数
                 self.drawingCardsNum = self.options.drawingCardsNum;
-
-                self.shuffle();
 
                 setTimeout(function() {
                     self.arrange(25, 20, 1);
