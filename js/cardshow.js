@@ -183,6 +183,7 @@
                                 'z-index': j + rowsNum * i
                             });
                         });
+                        
                 }
 
             }
