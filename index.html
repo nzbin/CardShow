@@ -60,11 +60,13 @@
     var data = '';
 
     for (var i = 0; i < 15; i++) {
-        data += '<li class="card card-flip">' +
-            '<figure class="card-front"><img src="img/' + Math.ceil(Math.random() * 15) + '.jpg"/>' +
-            '<figcaption>' + i + '</figcaption></figure>' +
-            '<div class="card-back"></div>' +
-            '</li>';
+        data += '<li class="card card-flip">\
+                    <figure class="card-front">\
+                        <img src="img/' + Math.ceil(Math.random() * 15) + '.jpg"/>\
+                        <figcaption>' + i + '</figcaption>\
+                    </figure>\
+                    <div class="card-back"></div>\
+                </li>';
     };
 
     var cs = $('.card-container').cardshow({

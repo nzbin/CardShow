@@ -1,33 +1,40 @@
-*, *:after, *:before {
+*,
+*:after,
+*:before {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
+
 body {
-	background: url(../img/texture.png) #7CAB90;
-	font-family: 'Lato', Calibri, Arial, sans-serif;
-	font-size: 14px;
-	color:#333;
+    background: url(../img/texture.png) #7CAB90;
+    font-family: 'Lato', Calibri, Arial, sans-serif;
+    font-size: 14px;
+    color: #333;
 }
-ul,li{list-style:none;}
+
+ul,
+li {
+    list-style: none;
+}
+
 img {
-	width: 100%;
+    width: 100%;
 }
+
 figure {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
-button{
-	cursor: pointer
+
+button {
+    cursor: pointer
 }
+
 .wrapper {
-/*	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100vh;*/
-	padding: 30px 0 0;
+    padding: 30px 0 0;
 }
+
 .github-link {
     display: block;
     visibility: visible;
@@ -35,9 +42,10 @@ button{
     z-index: 999999;
     top: 30px;
     left: 0;
-	background-color:#505d6b;
-	border-radius:0 3px 3px 0;
+    background-color: #505d6b;
+    border-radius: 0 3px 3px 0;
 }
+
 .iconlink {
     border-bottom: none;
     position: relative;
@@ -51,38 +59,43 @@ button{
     white-space: nowrap;
     text-decoration: none;
 }
+
 .iconlink i.fa {
     font-size: 1.2rem;
 }
+
 .iconlink:hover {
-	padding: 10px 10px 10px 80px;
+    padding: 10px 10px 10px 80px;
 }
+
 .iconlink[data-title]:before {
-	font-weight:300;
-	content:attr(data-title);
-	display:inline-block;
-	position:absolute;
-	top:0;
-	left:0;
-	font-size:14px;
-	padding:12px 6px;
-	color:#fff;
-	text-decoration:none;
-	width:auto;
-	white-space:nowrap;
-	pointer-events:none;
-	opacity:0;
-	-webkit-transition:opacity 150ms linear,-webkit-transform 150ms linear;
-	transition:opacity 150ms linear,-webkit-transform 150ms linear;
-	transition:opacity 150ms linear,transform 150ms linear;
-	transition:opacity 150ms linear,transform 150ms linear,-webkit-transform 150ms linear;
+    font-weight: 300;
+    content: attr(data-title);
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 14px;
+    padding: 12px 6px;
+    color: #fff;
+    text-decoration: none;
+    width: auto;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    -webkit-transition: opacity 150ms linear, -webkit-transform 150ms linear;
+    transition: opacity 150ms linear, -webkit-transform 150ms linear;
+    transition: opacity 150ms linear, transform 150ms linear;
+    transition: opacity 150ms linear, transform 150ms linear, -webkit-transform 150ms linear;
 }
+
 .iconlink[data-title]:hover:before {
-	opacity:1;
-	pointer-events:auto
+    opacity: 1;
+    pointer-events: auto
 }
-@media screen and (max-width: 768px){
+
+@media screen and (max-width:768px) {
     .iconlink {
-		display:none;
-	}
+        display: none;
+    }
 }
