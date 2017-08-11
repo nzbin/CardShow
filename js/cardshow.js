@@ -398,7 +398,7 @@
                         $(this).off(self.transEndEventName);
                         $(this).css({
                             'transform': 'translate(' + x + 'px,' + -y + 'px) rotateY(-179.9deg)',
-                            'z-index': self.runTimes - 1
+                            'z-index': self.runTimes + 999
                         });
                     });
 
