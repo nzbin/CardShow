@@ -377,7 +377,7 @@
                 // 中奖卡片依次排列
                 self.cards.eq(luckyNum).css({
                     'transform': 'translate(' + x + 'px,' + -y + 'px)',
-                    'z-index': '999'
+                    'z-index': self.runTimes + 999
                 });
                 //},500);
 
@@ -405,7 +405,6 @@
                 }
             }
 
-
         },
 
         // 卡片翻转
@@ -422,7 +421,7 @@
 
                         self.cards.eq(luckyNum).css({
                             'transform': 'translate(' + (parseInt(x) + 90) + 'px, ' + y + 'px ) rotateY(-179.9deg)',
-                            'z-index': '999'
+                            'z-index': self.runTimes + 999
                         });
 
                     } else {
@@ -460,7 +459,7 @@
 
                                 $el.css({
                                     'transform': 'translate(' + (parseInt(x) + 90) + 'px, ' + y + 'px ) rotateY(-179.9deg)',
-                                    'z-index': '999'
+                                    'z-index': self.runTimes + 999
                                 });
 
                             } else {
