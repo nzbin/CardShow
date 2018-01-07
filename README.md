@@ -32,11 +32,11 @@ CardShow is a jQuery plugin of drawing cards. It is more like a game.
 ```html
 <ul class="card-container card-perspective">
   <li class="card card-flip">
-	<figure class="card-front">
-	    <img src="img/1.jpg"/>
-	    <figcaption>about</figcaption>
-	</figure>
-	<div class="card-back"></div>
+    <figure class="card-front">
+      <img src="img/1.jpg"/>
+      <figcaption>about</figcaption>
+    </figure>
+    <div class="card-back"></div>
   </li>
 </ul>
 ```
