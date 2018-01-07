@@ -1,23 +1,34 @@
 # CardShow
 
-CardShow is a jQuery plugin of drawing cards.
+CardShow is a jQuery plugin of drawing cards. It is more like a game.
+
+## Demo
+
+[JQuery CardShow](https://nzbin.github.io/CardShow)
 
 ## Browser Support
-IE9+ / Edge / FireFox 3.5+ / Chrome / Safari / Opera 11.5+
 
-## Options
-
-- __src__: ```String``` The data of user,you should set it as required.
-- __autoDrawing__: ```Boolean``` Default true,automatic drawing or manual drawing.
-- __backface__: ```Boolean``` Default true,if show the back of cards with their entrances.
-- __rows__: ```Number``` Default 1,arrange the cards with multiple lines.
-- __drawingCardsNum__: ```Number``` Default 1,the number of drawing cards every round.
-- __drawingRounds__: ```Number``` Default 0 (no limit),the rounds of drawing cards.
-- __drawingSpeed__: ```Number``` Default 300,the speed of automatic drawing.
+- IE9
+- Edge
+- FireFox 10
+- Chrome 12
+- Safari 4
+- Opera 15
 
 ## Usage
 
-### html structure of card:
+### Include files
+
+```html
+<link href="/path/to/cardshow.css" rel="stylesheet">
+
+<script src="/path/to/modernizr-custom.js"></script>
+<script src="/path/to/jquery.js"></script>
+<script src="/path/to/jquery.cardshow.js"></script>
+```
+
+### Html structure
+
 ```html
 <ul class="card-container card-perspective">
 	<li class="card card-flip">
@@ -30,7 +41,8 @@ IE9+ / Edge / FireFox 3.5+ / Chrome / Safari / Opera 11.5+
 </ul>
 ```
 
-### instance:
+### Call plugin
+
 ```js
 var cardshow = $('.card-container').cardshow({
 	src: data,
@@ -43,10 +55,35 @@ var cardshow = $('.card-container').cardshow({
 });
 ```
 
+## Options
 
-## Demo
+- **src** `String`
 
-[https://nzbin.github.io/CardShow](https://nzbin.github.io/CardShow)
+  Default `''`, The user data, you should set it as required.
+
+- **autoDrawing** `Boolean`
+
+  Default `true`, automatic drawing or manual drawing.
+
+- **backface** `Boolean`
+
+  Default `true`, if show the back of cards with their entrance.
+
+- **rows** `Number`
+
+  Default `1`, arrange the cards with multiple lines.
+
+- **drawingCardsNum** `Number`
+
+  Default `1`, the number of drawing cards in every round.
+
+- **drawingRounds** `Number`
+
+  Default `0` (no limit), the rounds of drawing cards.
+
+- **drawingSpeed** `Number`
+
+  Default `300`, the speed of automatic drawing.
 
 ## License
 
