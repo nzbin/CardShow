@@ -1,7 +1,8 @@
-/*
+/**
  * cardshow.js v1.3.0
  * 
  * Released under the MIT license
+ * 
  * Copyright 2016 by nzbin
  *
  */
@@ -82,8 +83,6 @@
 
             this.turnItem();
 
-            this.cardHover();
-
             // 解决 chrome/opera 打开时 onresize 就执行的 bug
             var widthFlag = window.innerWidth;
             this.resize(widthFlag);
@@ -109,7 +108,7 @@
             var rand = Math.floor(Math.random() * n);
 
             if (rand == self.luckyNum) {
-                return self.random(n); // 忘记传参，找了好长时间的错误
+                return self.random(n);
             } else {
                 self.luckyNum = rand;
                 return self.luckyNum;
@@ -493,20 +492,6 @@
                 }
 
             });
-        },
-        //卡片触摸置顶，可有可无？
-        cardHover: function() {
-            // var self = this;
-            // var zIndex;
-
-            // self.cards.hover(function(e){
-            //     e.stopPropagation();
-            //     zIndex = $(this).css('z-index');
-            //     $(this).css('z-index','999');
-            // },function(e){
-            //     e.stopPropagation();
-            //     $(this).css('z-index',zIndex);
-            // })
         },
         // 窗口变化事件
         resize: function(flag) {
