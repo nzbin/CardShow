@@ -2,18 +2,13 @@
 
 CardShow is a jQuery plugin of drawing cards. It is more like a game.
 
-## Demo
-
-[JQuery CardShow](https://nzbin.github.io/CardShow)
+Online Demo: [https://nzbin.github.io/CardShow](https://nzbin.github.io/CardShow)
 
 ## Browser Support
 
-- IE9
-- Edge
-- FireFox 10
-- Chrome 12
-- Safari 4
-- Opera 15
+IE | Edge | Firefox | Chrome | Safari | Opera |
+--- | --- | --- | --- | --- | --- |
+9+ ✔ | 12+ ✔ | 10+ ✔ | 12+ ✔ | 4+ ✔ | 15+ ✔ |
 
 ## Usage
 
