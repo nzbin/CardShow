@@ -6,9 +6,9 @@ Online Demo: [https://nzbin.github.io/CardShow](https://nzbin.github.io/CardShow
 
 ## Browser Support
 
-IE | Edge | Firefox | Chrome | Safari | Opera |
---- | --- | --- | --- | --- | --- |
-9+ ✔ | 12+ ✔ | 10+ ✔ | 12+ ✔ | 4+ ✔ | 15+ ✔ |
+IE | Edge | Firefox | Chrome | Safari | Opera
+--- | --- | --- | --- | --- | ---
+9+ ✔ | 12+ ✔ | 10+ ✔ | 12+ ✔ | 4+ ✔ | 15+ ✔
 
 ## Usage
 
