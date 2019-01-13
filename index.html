@@ -1,0 +1,106 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>CardShow</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato:300,400,700)' />
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/cardshow.css">
+    <link rel="stylesheet" href="css/demo.css">
+    <script src="js/vendor/modernizr-custom.js"></script>
+</head>
+
+<body>
+    <!--[if lt IE 9]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="wrapper">
+        <div class="cardshow">
+            <div class="luckyarea"><span>CardShow</span></div>
+            <ul id="" class="card-container card-perspective">
+                <!-- <li class="card card-flip">
+                    <figure class="card-front">
+                        <img src="img/1.jpg"/>
+                        <figcaption>about</figcaption>
+                    </figure>
+                    <div class="card-back"></div>
+                </li> -->
+            </ul>
+            <nav>
+                <button id="start">开始</button>
+                <button id="stop">停止</button>
+                <button id="shuffle">洗牌</button>
+                <button id="arrange">排列</button>
+                <button id="reset">重置卡片</button>
+                <select id="method">
+                    <option value="0">自动抽卡</option>
+                    <option value="1">手动抽卡</option>
+                </select>
+            </nav>
+        </div>
+    </div>
+    <div class="github-link">
+        <a href="https://github.com/nzbin/CardShow" data-title="CardShow" class="iconlink">
+            <i class="fa fa-github"></i>
+        </a>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+    window.jQuery || document.write('<script src="js/vendor/jquery-1.12.4.min.js"><\/script>')
+    </script>
+    <script src="js/cardshow.js"></script>
+    <script type="text/javascript">
+    // 生成模拟数据
+    var data = '';
+
+    for (var i = 0; i < 15; i++) {
+        data += '<li class="card card-flip">\
+                    <figure class="card-front">\
+                        <img src="img/' + Math.ceil(Math.random() * 15) + '.jpg"/>\
+                        <figcaption>' + i + '</figcaption>\
+                    </figure>\
+                    <div class="card-back"></div>\
+                </li>';
+    };
+
+    var cs = $('.card-container').cardshow({
+        src: data,
+        autoDrawing: true,
+        backface: true,
+        rows: 1,
+        drawingCardsNum: 3,
+        drawingRounds: 0,
+        drawingSpeed: 300
+    });
+
+    // 选择抽卡方式
+    $('#method').val('0');
+
+    $('#method').change(function(){
+
+        var method = $('#method').val();
+
+        if(method == '0'){
+            cs.init({
+                src: data,
+                autoDrawing: true,
+                drawingCardsNum: 3
+            });
+        }else{
+            cs.init({
+                src: data,
+                autoDrawing: false,
+                drawingCardsNum: 3
+            });
+        }
+        
+    })
+    </script>
+</body>
+
+</html>

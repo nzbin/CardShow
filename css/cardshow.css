@@ -1,0 +1,113 @@
+/**
+ * cardshow.css
+ * 
+ * Released under the MIT license
+ * 
+ * Copyright 2016 by nzbin
+ *
+ */
+
+.cardshow {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cardshow nav {
+    position: fixed;
+    bottom: 30px;
+}
+
+.luckyarea {
+    max-width: 1200px;
+    height: 120px;
+    margin-bottom: 20px;
+    border: 1px solid #6B967D;
+    text-align: center;
+    line-height: 120px;
+    font-size: 30px;
+    color: #5B826B;
+}
+
+.card-container {
+    position: relative;
+    max-width: 1200px;
+    height: 300px;
+}
+
+.card-perspective {
+    -webkit-perspective: 1800px;
+    perspective: 1800px;
+}
+
+.card-flip {
+    -webkit-transform-origin: 0% 50%;
+    transform-origin: 0% 50%;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+.card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 90px;
+    height: 120px;
+    border-radius: 5px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    transition: all 300ms ease-in-out;
+    cursor: pointer;
+}
+
+.card:hover {
+    top: -5px;
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, .3);
+}
+
+.card-front {
+    height: 100%;
+    padding: 5px;
+    border: 1px solid #eee;
+    background-color: #fff;
+}
+
+.card .card-back {
+    /*-webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg); */
+}
+
+.card-back {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: #ccc;
+    background: repeating-linear-gradient(45deg, #ccc 0%, #ccc 10%, #ddd 0%, #ddd 50%) 0 / 6px 6px;
+    border: 1px solid #b5b5b5;
+}
+
+.card-front,
+.card-back {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+    .luckyarea {
+        max-width: 1200px;
+        height: 80px;
+        line-height: 80px;
+    }
+    .card {
+        width: 60px;
+        height: 80px;
+    }
+    .card:hover {
+        top: 0;
+        box-shadow: none;
+    }
+}
