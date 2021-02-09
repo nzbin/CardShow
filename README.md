@@ -6,16 +6,16 @@ Online Demo: [https://nzbin.github.io/CardShow](https://nzbin.github.io/CardShow
 
 ## Browser Support
 
-IE | Edge | Firefox | Chrome | Safari | Opera
---- | --- | --- | --- | --- | ---
-9+ ✔ | 12+ ✔ | 10+ ✔ | 12+ ✔ | 4+ ✔ | 15+ ✔
+| IE   | Edge  | Firefox | Chrome | Safari | Opera |
+| ---- | ----- | ------- | ------ | ------ | ----- |
+| 9+ ✔ | 12+ ✔ | 10+ ✔   | 12+ ✔  | 4+ ✔   | 15+ ✔ |
 
 ## Usage
 
 ### Include files
 
 ```html
-<link href="/path/to/cardshow.css" rel="stylesheet">
+<link href="/path/to/cardshow.css" rel="stylesheet" />
 
 <script src="/path/to/modernizr-custom.js"></script>
 <script src="/path/to/jquery.js"></script>
@@ -28,7 +28,7 @@ IE | Edge | Firefox | Chrome | Safari | Opera
 <ul class="card-container card-perspective">
   <li class="card card-flip">
     <figure class="card-front">
-      <img src="img/1.jpg"/>
+      <img src="img/1.jpg" />
       <figcaption>about</figcaption>
     </figure>
     <div class="card-back"></div>
@@ -46,7 +46,7 @@ $('.card-container').cardshow({
   rows: 1,
   drawingCardsNum: 3,
   drawingRounds: 0,
-  drawingSpeed: 300
+  drawingSpeed: 300,
 });
 ```
 
@@ -83,6 +83,3 @@ $('.card-container').cardshow({
 ## License
 
 MIT License
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
